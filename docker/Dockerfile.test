@@ -1,0 +1,72 @@
+FROM centos:7
+MAINTAINER Herman Junge <herman.junge@telefonica.com>
+
+###############################################################################
+#
+#  JAVA and other packages
+#
+###############################################################################
+
+
+WORKDIR /tmp
+RUN yum update -y && \
+	yum install -y wget tar git java-1.7.0-openjdk-devel MySQL-python mysql-devel gcc python-devel
+ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85-2.6.1.2.el7_1.x86_64/jre
+
+
+###############################################################################
+#
+#  Apache Flume
+#
+###############################################################################
+
+
+RUN wget https://www.apache.org/dist/flume/1.5.2/apache-flume-1.5.2-bin.tar.gz && \
+	tar xvfz apache-flume-1.5.2-bin.tar.gz && \
+	rm apache-flume-1.5.2-bin.tar.gz && \
+	mv apache-flume-1.5.2-bin flume && \
+	mkdir -p /tmp/flume/plugins.d/cygnus/ && \
+	mkdir /tmp/flume/plugins.d/cygnus/lib && \
+	mkdir /tmp/flume/plugins.d/cygnus/libext
+
+
+###############################################################################
+#
+#  Apache Maven
+#
+###############################################################################
+
+
+RUN wget http://www.eu.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz && \
+	tar xvfz apache-maven-3.2.5-bin.tar.gz && \
+	rm apache-maven-3.2.5-bin.tar.gz && \
+	mv apache-maven-3.2.5 maven && \
+	rm /tmp/maven/conf/settings.xml
+COPY ./docker/maven-repo/settings.xml /tmp/maven/conf/settings.xml
+
+
+###############################################################################
+#
+#  Testing Material
+#
+###############################################################################
+
+
+# We may want to move this command up later
+COPY ./test/acceptance/requirements.txt /tmp/requirements.txt
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+	python get-pip.py && \
+	rm get-pip.py && \
+	pip install -r requirements.txt --allow-all-external && \
+	pip install python-levenshtein && \
+	rm /tmp/requirements.txt
+
+
+###############################################################################
+#
+#  Finally, workdir
+#
+###############################################################################
+
+
+WORKDIR /cygnusapp

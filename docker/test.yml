@@ -1,0 +1,6 @@
+cygnus_test:
+  build: ./..
+  dockerfile: ./docker/Dockerfile.test
+  volumes:
+    - ./..:/cygnusapp
+  command: /bin/bash -c ./docker/test.sh

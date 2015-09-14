@@ -22,7 +22,7 @@ Then each file can be edited in order to change the configuration that will affe
 
 ##Files per instance
 
-These files are `cygnus_instance.conf.template` and `agent.conf.template`. A copy must be created for each instance of Cygnus wanted to be run, followinf this format:
+These files are `cygnus_instance.conf.template` and `agent.conf.template`. A copy must be created for each instance of Cygnus wanted to be run, following this format:
 
 ```bash
 cp /usr/cygnus/conf/cygnus_instance.conf.template /usr/cygnus/conf/cygnus_instance_example1.conf

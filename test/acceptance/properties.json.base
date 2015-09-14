@@ -27,7 +27,7 @@
     "ckan": {
         "ckan_version": "X.Y",
         "ckan_verify_version": "False",
-        "ckan_authorization": "CKAN API key"
+        "ckan_authorization": "CKAN API key",
         "ckan_host": "w.x.y.z",
         "ckan_port": "XX",
         "ckan_orion_url": "http://host:port",
